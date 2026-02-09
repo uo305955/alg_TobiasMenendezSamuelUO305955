@@ -18,7 +18,7 @@ static int []w;
 
 public static void main (String arg [] )
 {
-	int n= Integer.parseInt(arg[0]);  // n leido de linea de comandos
+	int n= Integer.parseInt(arg[0]);  // n leido de linea de comandos 
 	v = new int [n] ;
 
 	rellena (v);

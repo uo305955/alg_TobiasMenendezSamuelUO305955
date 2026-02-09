@@ -13,7 +13,7 @@ public static void main (String arg [] )
 	long t1,t2;
 
 	System.out.println ("n   tTiempo");   
-	for ( int n=10000; n<= 81920000; n*=2) // n se va incrementando (*2)
+	for (int n=10000; n<= 81920000; n*=2) // n se va incrementando (*2)
 	{
 		System.out.print (n+"\t");
 		v = new int [n] ;
@@ -25,7 +25,7 @@ public static void main (String arg [] )
 		t2=System.currentTimeMillis();
 		System.out.println ((t2-t1)+"\t");   
 
-        } // fin de for de n del problema
+    } // fin de for de n del problema
 		
 	System.out.println("\nFin de la medicion de tiempos *****");
 
