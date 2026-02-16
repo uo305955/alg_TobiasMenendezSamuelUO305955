@@ -5,13 +5,14 @@ public class Bucle3 {
 		long cont = 0;
 		long n1 = n;
 		long i = 1;
-		while (i <= 2 * n) {
-			for (long j = i; j >= 0; j -= 2) {
-				for (long k = 1; k <= n; k *= 2) {
+		while (i <= 2 * n) { //O(n)
+			for (long j = i; j >= 0; j -= 2) {//O(n/2)
+				for (long k = 1; k <= n; k *= 2) { //O(log n)
 					cont++;
 				}
 			}
-			i++;
+			i++; //Sumatorio desde i=1 a 2n (i/2 log2 n) = log2 n/2 * sumatorio de i=1 a 2n (i) =
+				 //log2 n/2 * sumatorio de i=1 a 2n (n*(n+1)/2)
 		}
 
 		return cont;

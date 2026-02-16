@@ -5,13 +5,13 @@ public class Bucle2 {
 		long cont = 0;
 		long n1 = n;
 		do {
-			for (long i = 1; i <= n; i++) {
-				for (long j = n; j >= 0; j -= 2) {
+			for (long i = 1; i <= n; i++) { //O(n)
+				for (long j = n; j >= 0; j -= 2) { //(n/2)
 					cont++;
 				}
 			}
 			n1 = n1 / 3;
-		} while (n1 >= 1);
+		} while (n1 >= 1); //(log n)
 
 		return cont;
 	}

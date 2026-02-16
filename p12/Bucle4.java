@@ -4,10 +4,12 @@ public class Bucle4 {
 
 	public static long bucle4(int n) {
 		long cont = 0;
-		for (int i = 1; i <= n; i++) {
+		for (int i = 1; i <= n; i++) { 
 			for (int j = 1; j <= i; j++) {
-				for (int k = 1; k <= j; k++) {
-					cont++;
+				for (int k = 1; k <= j; k++) { 
+					cont++;	//O(n^3) = Sumatorio de i=1 a n * Sumatorio de j=1 a i * Sumatorio de k=1 a j
+							// Tras operar
+							//B4 = 2/3 * n^3
 				}
 			}
 		}
