@@ -8,57 +8,57 @@ import java.util.*;
 public class PuntosDyV
 {
 public static DistanciaMinima calculaDistanciaMin (List<Punto> listaPuntos){
-	int n = listaPuntos.size();
+	listaPuntos.sort(Comparator.comparingDouble(Punto::getCoordX));
+	return calculaDistanciaMinRec(listaPuntos,0,listaPuntos.size()-1);
+}
 
-	if(n<=1)
-	return new DistanciaMinima(null,null,Double.MAX_VALUE);
+private static DistanciaMinima calculaDistanciaMinRec(List<Punto> listaPuntos, int inicio, int fin) {
+    if(fin - inicio <= 3)
+		return resolverBase(listaPuntos,inicio,fin);
 
-	if(n ==2){
-	double dist = listaPuntos.get(0).calculaDistancia(listaPuntos.get(1));
-	return new DistanciaMinima(listaPuntos.get(0),listaPuntos.get(1),dist);
-	}
-	int mitad = n/2;
+	int medio = (inicio+fin)/2;
+	DistanciaMinima izq = calculaDistanciaMinRec(listaPuntos,inicio,medio);
+	DistanciaMinima der = calculaDistanciaMinRec(listaPuntos, medio+1, fin);
 
-	List<Punto> izq = listaPuntos.subList(0, mitad);
-	List<Punto> dcha = listaPuntos.subList(mitad, n);
+	DistanciaMinima mejor = (izq.getDist() < der.getDist())?izq:der;
+	double linea = listaPuntos.get(medio).getCoordX();
+	List<Punto> franja = new ArrayList<>();
 
-	DistanciaMinima dIzq = calculaDistanciaMin(new ArrayList<Punto>(izq));
-	DistanciaMinima dDcha = calculaDistanciaMin(new ArrayList<Punto>(dcha));
-
-	DistanciaMinima dMin = dIzq.getDist() < dDcha.getDist() ? dIzq : dDcha;
-	double linea = listaPuntos.get(mitad).getCoordX();
-
-	List<Punto> cercaIzq = new ArrayList<>();
-	List<Punto> cercaDcha = new ArrayList<>();
-
-	for(int i = izq.size() -1 ; i>=0;i--){
-		if(Math.abs(izq.get(i).getCoordX() - linea) < dMin.getDist())
-			cercaIzq.add(izq.get(i));
-		else
-			break;
-	}
-
-	for(int i = 0;i < dcha.size(); i++){
-		if(Math.abs(dcha.get(i).getCoordX() - linea) < dMin.getDist())
-			cercaDcha.add(dcha.get(i));
-		else
-			break;
-	}
-
-	for(int i = 0; i < cercaIzq.size(); i++){
-		for(int j = 0; j < cercaDcha.size(); j++){
-			Punto a = cercaIzq.get(i);
-			Punto b = cercaDcha.get(j);
-			double dist = a.calculaDistancia(b);
-
-			if(dist < dMin.dist){
-				dMin = new DistanciaMinima(a,b,dist);
-			}
-
+	for(int i=inicio;i<=fin;i++){
+		if(Math.abs(listaPuntos.get(i).getCoordX()-linea)<mejor.getDist()){
+			franja.add(listaPuntos.get(i));
 		}
 	}
 
-	return dMin;
+	for(int i=0;i<franja.size();i++){
+		for(int j=i+1;j<franja.size();j++){
+			double d = franja.get(i).calculaDistancia(franja.get(j));
+			
+			if(d < mejor.getDist()){
+				mejor = new DistanciaMinima(franja.get(i), franja.get(j), d);
+			}
+		}
+	}
+	return mejor;
+}
+
+private static DistanciaMinima resolverBase(List<Punto> listaPuntos, int izq, int der) {
+    double min = Double.MAX_VALUE;
+	Punto p1 = null;
+	Punto p2 = null;
+
+	for(int i = izq; i<der; i++){
+		for(int j=i+1; j<=der; j++){
+			double d = listaPuntos.get(i).calculaDistancia(listaPuntos.get(j));
+
+			if(d < min){
+				min = d;
+				p1 = listaPuntos.get(i);
+				p2 = listaPuntos.get(j);
+			}
+		}
+	}
+	return new DistanciaMinima(p1, p2, min);
 }
 
 public static void loadFilePuntos(String nombreFicheroEntrada, List<Punto> listaPuntos){
@@ -85,11 +85,11 @@ public static void main (String arg [])
 {
 	List<Punto> puntos = new ArrayList<>();
 	loadFilePuntos(arg[0], puntos);
-	puntos.sort(Comparator.comparingDouble(Punto::getCoordX));
 	DistanciaMinima dist = calculaDistanciaMin(puntos);
 	
 	System.out.println("Puntos mas cercanos: " + dist.getP1() + " " + dist.getP2());
 	System.out.println("Distancia minima: " + dist.getDist());
 }
+
 }
 

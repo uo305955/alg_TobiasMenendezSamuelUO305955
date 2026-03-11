@@ -23,4 +23,10 @@ public class DistanciaMinima
     public Punto getP2(){
         return p2;
     }
+
+    @Override
+    public String toString(){
+        return "Puntos más cercanos: " + p1 + " " + p2 +
+               "\nDistancia mínima: " + dist;
+    }
 } 
