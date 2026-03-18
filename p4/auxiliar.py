@@ -135,3 +135,5 @@ if __name__ == "__main__":
     print(f"Conexiones:")
     for nodo, vecinos in mapa["grafo"].items():
         print(f"  Nodo {nodo}: conectado con {vecinos}")
+
+

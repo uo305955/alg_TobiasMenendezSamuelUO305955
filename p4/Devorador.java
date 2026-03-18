@@ -1,4 +1,4 @@
-package algstudent.s4;
+package src;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -7,6 +7,9 @@ import java.util.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+
+//Hacerlo en eclipse
 
 public class Devorador {
 	public static void main(String[] args) {
