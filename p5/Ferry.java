@@ -2,8 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Ferry {
@@ -11,10 +10,12 @@ public class Ferry {
     private int boatLength;//Longitud de los carriles del barco
     private List<Integer> vehicles; 
     private boolean[][] dp; //Matriz con las posibles soluciones;
-    private int[] sumatorio; //Suma acumulada de las longitudes de los vehiculos
+    private int[] sumatorio; //Suma acumulada de las longitudes de los vehiculosç
+    private List<Step> path;
 
 
     public Ferry(int boatLength, List<Integer> vehicles){
+        this.path = new LinkedList<>();
         this.boatLength = boatLength;
         this.vehicles = vehicles;
         this.dp = new boolean[vehicles.size()+1][boatLength+1];
@@ -54,9 +55,9 @@ public class Ferry {
         }
     }
 
-    private int getNumVehicles(){
+    private int getMaximumNumberOfVehicles(){
         int k = 0;
-        for(int i = 0;i < vehicles.size();i++){
+        for(int i = 0;i <= vehicles.size();i++){
             boolean posible = false;
             for(int j = 0;j <= boatLength;j++){
                 if(dp[i][j]){
@@ -72,68 +73,110 @@ public class Ferry {
         return k;
     }
 
-    private List<String> solToPrint(int k){
-        List<String> resultado = new ArrayList<>();
+    public void printData() {
+		System.out.printf("Length of parallel lanes for starboard and port on the ferry: %d\n", boatLength);
+		System.out.printf("The vehicles have the following lengths:\n");
+		for (int i = 0; i < vehicles.size(); i++) {
+			System.out.printf("\tVehicle %d: %d\n", i+1, vehicles.get(i));
+		}
+	}
 
-        int j = 0;
-        for(int i = 0; i <= boatLength;i++){
-            if(dp[k][i]){
-                j = i;
+    public void printPossibleAssignation(){
+        path.clear();
+        boolean found = false;
+		System.out.printf("\nPossible assignation:\n");
+		for (int i = getMaximumNumberOfVehicles(); i > 0; i--) {
+            if(found)
                 break;
+            for(int j = 0; j <= boatLength; j++){
+                if(found)
+                    break;
+                int vehi = vehicles.get(i-1);
+                if(j>=vehi){
+                    if(dp[i][j]){
+                        if(dp[i-1][j-vehi]){
+                            found = true;
+                            processAssignation(i,j);
+                        }
+                    }
+                }
             }
+			//si found es true -> rompo la ejecución
+			//para cada p de la longitud del barco
+			//		si found es true -> rompo la ejecución
+			//		si dp[i][p-v(i)] es true -> found = true; llamo a processAssignation()
+		}
+	}
+
+    private void processAssignation(int i, int l) {
+        if(i==0 && l==0){
+            printPath();
+            return;
         }
 
-        for(int i = k; i > 0;i--){
-            int vehi = vehicles.get(i-1);
-            if(j >= vehi && dp[i-1][j-vehi]){
-                resultado.add("babor");
-                j = j - vehi;
-            } else{
-                resultado.add("estribor");
-            }
+        int vehi = vehicles.get(i-1);
+
+        if(dp[i-1][l]){
+            path.addFirst(new Step(i-1, l, i, l, i, "estribor"));
+            processAssignation(i-1, l);
+            return;
         }
 
-        Collections.reverse(resultado);
-        return resultado;
-    }
-
-    public void printSolution(){
-        int k = getNumVehicles();
-
-        System.out.println("Han llegado un total de " + vehicles.size() + " vehículos (" + k + " viajarán).");
-        System.out.println("Tabla con los cálculos realizados:");
-        System.out.print("V/L ");
-        for(int j = 0; j <= boatLength;j++){
-            System.out.print(j + " ");
+        if(dp[i-1][l-vehicles.get(i-1)]){
+            path.addFirst(new Step(i-1, l-vehi, i, l, i, "babor"));
+            processAssignation(i-1, l-vehicles.get(i-1));
         }
-        System.out.println();
+	// if ((i == 0) && (l == 0)) { // llamo a printPath y acabo la ejecución (return)
+		
+	//if (dp[i-1][l]) {
+	//		añado al path (path.addFirst) un nuevo Step llamado estribor; llamo a processAssignation(i-1, l);
 
-        for(int i = 0; i <= k;i++){
-            System.out.print(i + "   ");
-            for(int j = 0; j <= boatLength;j++){
-                System.out.print((dp[i][j] ? "T ":"F "));
-            }
-            System.err.println();
-        }
+		
+	// if (dp[i-1][l-vehicles.get(i-1)]) {
+	//		añado al path (path.addFirst) un nuevo Step llamado babor; llamo a processAssignation(i-1, l-vehicles.get(i-1));
+	}
 
-        List<String> solucion = solToPrint(k);
-        System.out.println("Posible asignación:");
-        int sumaBabor = 0;
-        int sumaEstribor = 0;
+    public void printSolutionTable() {
+	System.out.printf("\nTable with calculations:\n");
+		
+	System.out.printf("%4s", "V/L");
+	for (int i = 0; i <= boatLength; i++) {
+		System.out.printf("%4d", i);	
+	}
+	System.out.printf("\n");
+		
+	for (int i = 0; i <= vehicles.size(); i++) {
+		System.out.printf("%4d", i);
+		for (int l = 0; l <= boatLength; l++) {
+			if (dp[i][l]){				
+				System.out.printf("%4s", "T");
+			}
+			else{ 
+					System.out.printf("%4s", "F");
+				}
+			}
+			System.out.printf("\n");
+		}
+	}
 
-        for(int i = 0; i < k; i++){
-            int vehi = vehicles.get(i);
 
-            if(solucion.get(i).equals("babor")){
-                sumaBabor += vehi;
-            }else{
-                sumaEstribor += vehi;
-            }
-            System.out.println("Vehículo " + (i+1) + " (longitud " + vehi + ") a " + solucion.get(i));
-        }
-
-        System.out.println("Ocupación final: Babor " + sumaBabor + "m / Estribor " + sumaEstribor +"m (válido <= " + boatLength + ").");
-    }
+    private void printPath() {
+	    int portLength = 0;
+	    int starboardLength = 0;
+	    for (var step : path) {		
+		    if (step.movement().equals("babor")){
+			    portLength += vehicles.get(step.vehicle()-1);
+		    }
+		    else{
+			    starboardLength += vehicles.get(step.vehicle()-1);
+		    }
+		    System.out.printf("Vehicle %d (length %d) -- From (%d, %d) -- To (%d, %d) -- Position: %s -- Port lengh: %d -- Starboard length: %d\n", 
+			    	step.vehicle(), vehicles.get(step.vehicle()-1),
+				    step.previousI(), step.previousL(),
+				    step.currentI(), step.currentL(), 
+				    step.movement(), portLength, starboardLength);
+	    }
+}
 
 
     public void loadFilePuntos(String nombreFicheroEntrada, List<Integer> listaCoches){
@@ -165,3 +208,7 @@ public class Ferry {
     } 
 
 }
+
+record Step(int previousI, int previousL, 
+		int currentI, int currentL, 
+		int vehicle, String movement) {}

@@ -8,7 +8,9 @@ public class Main {
         ferry.loadFilePuntos(args[0], vehicles);
         ferry = new Ferry(ferry.getBoatLenght(), vehicles);
         ferry.run();
-        ferry.printSolution();
+        ferry.printData();
+        ferry.printSolutionTable();
+        ferry.printPossibleAssignation();
     }
 
 }
