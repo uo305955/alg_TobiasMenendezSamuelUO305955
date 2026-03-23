@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+
 public class Ferry {
 
     private int boatLength;//Longitud de los carriles del barco
@@ -37,12 +38,12 @@ public class Ferry {
         dp[0][0] = true;
 
         for(int i=1;i<=vehicles.size();i++){
-            for(int j= boatLength; j >= 0; j--){
-                if(!dp[i-1][j]){ //Si con el coche anterior no entra metiendo uno mas tampoco va entrar
+            for(int l= boatLength; l >= 0; l--){
+                if(!dp[i-1][l]){ //Si con el coche anterior no entra metiendo uno mas tampoco va entrar
                     continue;                    
                 }
                 si = sumatorio[i];
-                pi = j;
+                pi = l;
                 vi = vehicles.get(i-1);
 
                 if((pi + vi)<=boatLength){
@@ -55,12 +56,12 @@ public class Ferry {
         }
     }
 
-    private int getMaximumNumberOfVehicles(){
+    public int getMaximumNumberOfVehicles(){
         int k = 0;
         for(int i = 0;i <= vehicles.size();i++){
             boolean posible = false;
-            for(int j = 0;j <= boatLength;j++){
-                if(dp[i][j]){
+            for(int l = 0;l <= boatLength;l++){
+                if(dp[i][l]){
                     posible = true;
                     break;
                 }
@@ -88,15 +89,15 @@ public class Ferry {
 		for (int i = getMaximumNumberOfVehicles(); i > 0; i--) {
             if(found)
                 break;
-            for(int j = 0; j <= boatLength; j++){
+            for(int l = 0; l <= boatLength; l++){
                 if(found)
                     break;
                 int vehi = vehicles.get(i-1);
-                if(j>=vehi){
-                    if(dp[i][j]){
-                        if(dp[i-1][j-vehi]){
+                if(l>=vehi){
+                    if(dp[i][l]){
+                        if(dp[i-1][l-vehi]){
                             found = true;
-                            processAssignation(i,j);
+                            processAssignation(i,l);
                         }
                     }
                 }
