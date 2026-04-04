@@ -1,4 +1,5 @@
 import java.io.FileReader;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class AlmacenajeContenedoresTiempos {
@@ -26,7 +27,8 @@ public class AlmacenajeContenedoresTiempos {
                 }
                 t1 = System.currentTimeMillis();
                 for (int repeticiones = 1; repeticiones <= nVeces; repeticiones++) {
-                new AlmacenajeContenedores(c, toS).resolverSinSalida();
+                Integer[] copia = Arrays.copyOf(toS, toS.length);
+                new AlmacenajeContenedores(c, copia).resolverSinSalida();
                 }
                 t2 = System.currentTimeMillis();
                 long tiempo = t2 - t1;
