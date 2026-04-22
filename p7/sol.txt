@@ -1,0 +1,37 @@
+Lista de contenedores y objetos contenidos:
+	Contenedor 1: 19 1 
+	Contenedor 2: 18 2 
+	Contenedor 3: 18 2 
+	Contenedor 4: 17 3 
+	Contenedor 5: 17 3 
+	Contenedor 6: 17 3 
+	Contenedor 7: 16 4 
+	Contenedor 8: 16 4 
+	Contenedor 9: 16 4 
+	Contenedor 10: 16 4 
+	Contenedor 11: 15 5 
+	Contenedor 12: 15 5 
+	Contenedor 13: 15 5 
+	Contenedor 14: 15 5 
+	Contenedor 15: 14 6 
+	Contenedor 16: 14 6 
+	Contenedor 17: 14 6 
+	Contenedor 18: 14 6 
+	Contenedor 19: 13 7 
+	Contenedor 20: 13 7 
+	Contenedor 21: 13 7 
+	Contenedor 22: 13 7 
+	Contenedor 23: 12 8 
+	Contenedor 24: 12 8 
+	Contenedor 25: 12 8 
+	Contenedor 26: 12 8 
+	Contenedor 27: 11 9 
+	Contenedor 28: 11 9 
+	Contenedor 29: 11 9 
+	Contenedor 30: 11 9 
+	Contenedor 31: 10 10 
+	Contenedor 32: 10 10 
+	Contenedor 33: 3 1 
+
+El número de contenedores necesario es 33
+Número de llamadas: 139
