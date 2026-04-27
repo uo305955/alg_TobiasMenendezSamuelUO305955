@@ -55,7 +55,7 @@ public class AlmacenajeContenedoresRyP{
 
     //Inicializar k
     //El problema de esto esta en que al inicializar la mejor k no se entra en el caso base
-    //Lo hice en casa pero no me funciona
+    //Lo hice en clase pero no me funciona
     //private void calculaMejorK(){
       //  mejorK = (sumaTotal() + capacidadC + 1)/capacidadC;
     //}
